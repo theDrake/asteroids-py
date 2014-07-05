@@ -235,7 +235,7 @@ class Ship(Polygon):
             self.asteroidsDestroyed = 0
             self.upgradeLevel = 0
             self.position = Point(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
-            self.rotation = SHIP_INITIAL_DIRECTION
+            self.rotation = SHIP_INITIAL_ROTATION
             self.dx = 0
             self.dy = 0
             self.respawnTimer = RESPAWN_DELAY

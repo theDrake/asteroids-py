@@ -6,11 +6,12 @@
 #      Author: David C. Drake (www.davidcdrake.com)
 #
 # Description: Contains an abstract 'Game' class for windowed games. Developed
-#              using Python 2.7.2.
+#              using Python 2.7.2 and PyGame 1.9.2a0.
 #-------------------------------------------------------------------------------
 
 import pygame
 import pygame.locals
+#import pygame.freetype
 
 #-------------------------------------------------------------------------------
 #       Class: Game
@@ -27,14 +28,18 @@ class Game:
     #              double-buffering is used for smooth animation and alpha
     #              blending is applied.
     #
-    #      Inputs: name   - Title displayed along the top of the window.
-    #              width  - Window width, in pixels.
-    #              height - Window height, in pixels.
-    #              fps    - Frames per second.
+    #      Inputs: name     - Title displayed along the top of the window.
+    #              width    - Window width, in pixels.
+    #              height   - Window height, in pixels.
+    #              fps      - Frames per second.
+    #              fontFile - Name of a font file (if 'None', a default font
+    #                         will be loaded).
     #
     #     Outputs: None.
     #---------------------------------------------------------------------------
-    def __init__(self, name, width, height, fps):
+    def __init__(self, name, width, height, fps, fontFile=None):
+        pygame.freetype.init()
+        self.font   = pygame.freetype.Font(fontFile)
         self.width  = width
         self.height = height
         self.fps    = fps

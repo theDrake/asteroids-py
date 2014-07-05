@@ -41,7 +41,7 @@ class AsteroidsGame(Game):
 
         # Create the ship and place it in the center of the screen:
         center = Point(screenWidth / 2, screenHeight / 2)
-        self.ship = Ship(center, SHIP_INITIAL_DIRECTION, SHIP_COLOR)
+        self.ship = Ship(center, SHIP_INITIAL_ROTATION, SHIP_COLOR)
 
         # Create bullets and an upgrade object:
         self.bullets = []
@@ -165,6 +165,7 @@ class AsteroidsGame(Game):
             b.paint(surface)
         for a in self.asteroids:
             a.paint(surface)
+        self.font.render_to(surface, (0, 0), "Hello!", 0)
 
     #---------------------------------------------------------------------------
     #      Method: initializeAsteroids

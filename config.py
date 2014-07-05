@@ -28,7 +28,7 @@ SHIP_POINTS = [(30, 15),
                (10, 0),
                (15, 5),
                (10, 10)]
-SHIP_INITIAL_DIRECTION = -90.0
+SHIP_INITIAL_ROTATION  = -90.0
 SHIP_ACCELERATION_RATE = 0.5
 SHIP_ROTATION_RATE     = 10.0
 SHIP_COLOR             = (140, 140, 255)
