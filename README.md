@@ -13,10 +13,10 @@ To Launch the Game
 
 Controls
 --------
-Move forward:  up arrow key
-Move backward: down arrow key
-Turn left:     left arrow key
-Turn right:    right arrow key
-Shoot:         space bar
+* Move forward: up arrow key
+* Move backward: down arrow key
+* Turn left: left arrow key
+* Turn right: right arrow key
+* Shoot: space bar
 
 Pick up power-ups for increased firepower and shielding!
