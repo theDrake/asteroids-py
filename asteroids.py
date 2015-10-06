@@ -1,29 +1,29 @@
 #!/usr/bin/env python
 
-#-------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 #    Filename: asteroids.py
 #
-#      Author: David C. Drake (www.davidcdrake.com)
+#      Author: David C. Drake (http://davidcdrake.com)
 #
-# Description: Contains an 'AsteroidsGame' class for managing a modified version
-#              of the classic game Asteroids along with a 'main' function for
-#              running it. Developed using Python 2.7.2 and PyGame 1.9.2a0.
-#-------------------------------------------------------------------------------
+# Description: Contains an 'AsteroidsGame' class for managing a modified
+#              version of the classic game Asteroids and a 'main' function for
+#              running it. Developed using Python 2.7 and PyGame 1.9.
+#------------------------------------------------------------------------------
 
 import random
 from game import Game
 from shapes import *
 from config import *
 
-#-------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 #       Class: AsteroidsGame
 #
 # Description: Manages a modified version of the classic Asteroids game.
 #
 #     Methods: __init__, gameLogic, paint, initializeAsteroids
-#-------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 class AsteroidsGame(Game):
-    #---------------------------------------------------------------------------
+    #--------------------------------------------------------------------------
     #      Method: __init__
     #
     # Description: Creates all game objects (a ship, bullets, an upgrade icon,
@@ -35,7 +35,7 @@ class AsteroidsGame(Game):
     #              fps          - Frames per second.
     #
     #     Outputs: None.
-    #---------------------------------------------------------------------------
+    #--------------------------------------------------------------------------
     def __init__(self, title, screenWidth, screenHeight, fps):
         Game.__init__(self, title, screenWidth, screenHeight, fps)
 
@@ -60,7 +60,7 @@ class AsteroidsGame(Game):
         pygame.mixer.music.load(BACKGROUND_MUSIC)
         pygame.mixer.music.play(-1)
 
-    #---------------------------------------------------------------------------
+    #--------------------------------------------------------------------------
     #      Method: gameLogic
     #
     # Description: Determines game behavior based on keyboard input and object
@@ -70,7 +70,7 @@ class AsteroidsGame(Game):
     #              newkeys - Keys that have just begun to be pressed down.
     #
     #     Outputs: None.
-    #---------------------------------------------------------------------------
+    #--------------------------------------------------------------------------
     def gameLogic(self, keys, newkeys):
         # Ship:
         self.ship.gameLogic(keys, newkeys)
@@ -124,7 +124,7 @@ class AsteroidsGame(Game):
                         a.deactivate()
                         self.asteroidCount -= 1
                         self.ship.asteroidsDestroyed += 1
-                        if self.ship.asteroidsDestroyed == UPGRADE_REQUIREMENT \
+                        if self.ship.asteroidsDestroyed == UPGRADE_REQUIREMENT\
                            and not self.upgrade.isActive():
                             self.upgrade.setPosition(a.position)
                             self.upgrade.activate()
@@ -145,7 +145,7 @@ class AsteroidsGame(Game):
         for s in self.stars:
             s.twinkle()
 
-    #---------------------------------------------------------------------------
+    #--------------------------------------------------------------------------
     #      Method: paint
     #
     # Description: Draws the background color and all active objects onto the
@@ -154,7 +154,7 @@ class AsteroidsGame(Game):
     #      Inputs: surface - The surface onto which images will be drawn.
     #
     #     Outputs: None.
-    #---------------------------------------------------------------------------
+    #--------------------------------------------------------------------------
     def paint(self, surface):
         surface.fill(BACKGROUND_COLOR)
         for s in self.stars:
@@ -167,7 +167,7 @@ class AsteroidsGame(Game):
             a.paint(surface)
         self.font.render_to(surface, (0, 0), "Hello!", 0)
 
-    #---------------------------------------------------------------------------
+    #--------------------------------------------------------------------------
     #      Method: initializeAsteroids
     #
     # Description: Creates a new set of asteroid objects.
@@ -175,7 +175,7 @@ class AsteroidsGame(Game):
     #      Inputs: None.
     #
     #     Outputs: None.
-    #---------------------------------------------------------------------------
+    #--------------------------------------------------------------------------
     def initializeAsteroids(self):
         self.asteroids = []
         for i in range(ASTEROID_COUNT + 1):

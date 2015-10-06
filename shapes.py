@@ -1,15 +1,13 @@
-#!/usr/bin/env python
-
-#-------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 #    Filename: shapes.py
 #
-#      Author: David C. Drake (www.davidcdrake.com)
+#      Author: David C. Drake (http://davidcdrake.com)
 #
 # Description: Contains shape-related classes for use in an Asteroids game,
 #              including 'Shape' (abstract), 'Polygon', 'Circle', 'Ship',
 #              'Asteroid', 'Bullet', 'Star', 'Upgrade', and 'Point'. Developed
-#              using Python 2.7.2 and PyGame 1.9.2a0.
-#-------------------------------------------------------------------------------
+#              using Python 2.7 and PyGame 1.9.
+#------------------------------------------------------------------------------
 
 import math
 import pygame
@@ -60,8 +58,10 @@ class Shape:
         return self.rotation
 
     def accelerate(self, acceleration):
-        self.dx = self.dx + acceleration * math.cos(math.radians(self.rotation))
-        self.dy = self.dy + acceleration * math.sin(math.radians(self.rotation))
+        self.dx = self.dx + acceleration * \
+                    math.cos(math.radians(self.rotation))
+        self.dy = self.dy + acceleration * \
+                    math.sin(math.radians(self.rotation))
 
     def intersects(self, otherShape):
         for point in self.getPoints():
@@ -151,10 +151,10 @@ class Polygon(Shape):
         crossingNumber = 0
         for i in range(len(points)):
             j = (i + 1) % len(points)
-            if     (((points[i].x < point.x and point.x <= points[j].x) or
-                    (points[j].x < point.x and point.x <= points[i].x)) and
-                   (point.y > points[i].y + (points[j].y - points[i].y) /
-                    (points[j].x - points[i].x) * (point.x - points[i].x))):
+            if (((points[i].x < point.x and point.x <= points[j].x) or
+                 (points[j].x < point.x and point.x <= points[i].x)) and
+                (point.y > points[i].y + (points[j].y - points[i].y) /
+                 (points[j].x - points[i].x) * (point.x - points[i].x))):
                 crossingNumber += 1
         return crossingNumber % 2 == 1
 
