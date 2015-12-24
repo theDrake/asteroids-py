@@ -36,12 +36,12 @@ class Game:
     #     Outputs: None.
     #---------------------------------------------------------------------------
     def __init__(self, name, width, height, fps, fontFile=None):
-        pygame.freetype.init()
-        self.font   = pygame.freetype.Font(fontFile)
-        self.width  = width
+        #pygame.freetype.init()
+        #self.font = pygame.freetype.Font(fontFile)
+        self.width = width
         self.height = height
-        self.fps    = fps
-        self.on     = True
+        self.fps = fps
+        self.on = True
         self.screen = pygame.display.set_mode((width, height),
                                               pygame.locals.DOUBLEBUF |
                                               pygame.locals.SRCALPHA)
