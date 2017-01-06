@@ -12,7 +12,7 @@ SCREEN_WIDTH      = 800
 SCREEN_HEIGHT     = 600
 FRAMES_PER_SECOND = 30
 BACKGROUND_COLOR  = (0, 0, 0)
-BACKGROUND_MUSIC  = 'star_wars_asteroid_field.mp3'
+BACKGROUND_MUSIC  = 'asteroids.mp3'
 
 SHIP_POINTS = [(30, 15),
                (10, 20),
