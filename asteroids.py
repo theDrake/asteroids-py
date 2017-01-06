@@ -165,7 +165,6 @@ class AsteroidsGame(Game):
             b.paint(surface)
         for a in self.asteroids:
             a.paint(surface)
-        self.font.render_to(surface, (0, 0), "Hello!", 0)
 
     #--------------------------------------------------------------------------
     #      Method: initializeAsteroids

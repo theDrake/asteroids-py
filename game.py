@@ -9,7 +9,6 @@
 
 import pygame
 import pygame.locals
-#import pygame.freetype
 
 #-------------------------------------------------------------------------------
 #       Class: Game
@@ -30,14 +29,10 @@ class Game:
     #              width    - Window width, in pixels.
     #              height   - Window height, in pixels.
     #              fps      - Frames per second.
-    #              fontFile - Name of a font file (if 'None', a default font
-    #                         will be loaded).
     #
     #     Outputs: None.
     #---------------------------------------------------------------------------
-    def __init__(self, name, width, height, fps, fontFile=None):
-        #pygame.freetype.init()
-        #self.font = pygame.freetype.Font(fontFile)
+    def __init__(self, name, width, height, fps):
         self.width = width
         self.height = height
         self.fps = fps
