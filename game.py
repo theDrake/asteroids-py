@@ -4,7 +4,7 @@
 #      Author: David C. Drake (http://davidcdrake.com)
 #
 # Description: Contains an abstract 'Game' class for windowed games. Developed
-#              using Python 2.7 and PyGame 1.9.
+#              using Python 2.7 and Pygame 1.9.
 #------------------------------------------------------------------------------
 
 import pygame

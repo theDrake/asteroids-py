@@ -7,7 +7,7 @@
 #
 # Description: Contains an 'AsteroidsGame' class for managing a modified
 #              version of the classic game Asteroids and a 'main' function for
-#              running it. Developed using Python 2.7 and PyGame 1.9.
+#              running it. Developed using Python 2.7 and Pygame 1.9.
 #------------------------------------------------------------------------------
 
 import random

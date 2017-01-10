@@ -6,7 +6,7 @@
 # Description: Contains shape-related classes for use in an Asteroids game,
 #              including 'Shape' (abstract), 'Polygon', 'Circle', 'Ship',
 #              'Asteroid', 'Bullet', 'Star', 'Upgrade', and 'Point'. Developed
-#              using Python 2.7 and PyGame 1.9.
+#              using Python 2.7 and Pygame 1.9.
 #------------------------------------------------------------------------------
 
 import math

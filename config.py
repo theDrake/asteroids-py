@@ -3,7 +3,8 @@
 #
 #      Author: David C. Drake (http://davidcdrake.com)
 #
-# Description: Configuration file for an Asteroids game written in Python 2.7.
+# Description: Configuration file for an Asteroids game developed using Python
+#              2.7 and Pygame 1.9.
 #------------------------------------------------------------------------------
 
 TITLE = 'Asteroids!'
