@@ -2,8 +2,8 @@ asteroids-py
 ============
 
 A variant on the classic _Asteroids_ game, developed using [Python 2.7]
-(http://python.org/download) and [PyGame 1.9](http://pygame.org/download.shtml)
-by [David C. Drake](www.davidcdrake.com).
+(https://python.org) and [PyGame 1.9](https://pygame.org) by [David C. Drake]
+(https://davidcdrake.com).
 
 Controls
 --------
