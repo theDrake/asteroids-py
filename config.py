@@ -1,11 +1,11 @@
-#------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 #    Filename: config.py
 #
-#      Author: David C. Drake (http://davidcdrake.com)
+#      Author: David C. Drake (https://davidcdrake.com)
 #
 # Description: Configuration file for an Asteroids game developed using Python
 #              2.7 and Pygame 1.9.
-#------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 
 TITLE = 'Asteroids!'
 SCREEN_WIDTH = 800

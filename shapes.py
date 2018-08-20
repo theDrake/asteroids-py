@@ -1,13 +1,13 @@
-#------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 #    Filename: shapes.py
 #
-#      Author: David C. Drake (http://davidcdrake.com)
+#      Author: David C. Drake (https://davidcdrake.com)
 #
 # Description: Contains shape-related classes for use in an Asteroids game,
 #              including 'Shape' (abstract), 'Polygon', 'Circle', 'Ship',
 #              'Asteroid', 'Bullet', 'Star', 'Upgrade', and 'Point'. Developed
 #              using Python 2.7 and Pygame 1.9.
-#------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 
 import math
 import pygame
@@ -100,8 +100,7 @@ class Shape:
         self.position = point
 
     def setRandomColor(self):
-        self.color = (random.randint(0, 255),
-                      random.randint(0, 255),
+        self.color = (random.randint(0, 255), random.randint(0, 255),
                       random.randint(0, 255))
 
 class Polygon(Shape):
@@ -193,13 +192,13 @@ class Ship(Polygon):
         for point in SHIP_POINTS:
             shape.append(Point(point[0], point[1]))
         Polygon.__init__(self, shape, position, rotation, color)
-        self.rotationRate       = SHIP_ROTATION_RATE
-        self.accelerationRate   = SHIP_ACCELERATION_RATE
+        self.rotationRate = SHIP_ROTATION_RATE
+        self.accelerationRate = SHIP_ACCELERATION_RATE
         self.asteroidsDestroyed = 0
-        self.upgradeLevel       = 0
-        self.shielded           = False
+        self.upgradeLevel = 0
+        self.shielded = False
         self.invincibilityTimer = 0
-        self.respawnTimer       = 0
+        self.respawnTimer = 0
 
     def gameLogic(self, keys, newkeys):
         if not self.isActive():
@@ -270,13 +269,9 @@ class Asteroid(Polygon):
             if self.color[index] < 0:
                 self.color[index] += 2 * ASTEROID_COLOR_DEVIATION
         self.color = tuple(self.color)
-        Polygon.__init__(self,
-                         self.shape,
-                         self.position,
-                         self.rotation,
+        Polygon.__init__(self, self.shape, self.position, self.rotation,
                          self.color)
-        self.setRandomAcceleration(ASTEROID_MIN_SPEED,
-                                   ASTEROID_MAX_SPEED)
+        self.setRandomAcceleration(ASTEROID_MIN_SPEED, ASTEROID_MAX_SPEED)
         self.accelerate(self.acceleration)
 
     def setRandomPoints(self):
@@ -302,9 +297,7 @@ class Circle(Shape):
 
     def paint(self, surface):
         if self.isActive():
-            pygame.draw.circle(surface,
-                               self.color,
-                               self.position.pair(),
+            pygame.draw.circle(surface, self.color, self.position.pair(),
                                int(self.radius))
 
     def getPoints(self):
@@ -360,13 +353,10 @@ class Star(Circle):
     def __init__(self):
         self.setRandomPosition()
         self.setRandomBrightness()
-        self.radius      = STAR_RADIUS
+        self.radius = STAR_RADIUS
         self.twinkleRate = STAR_TWINKLE_SPEED
-        self.rotation    = 0.0
-        Circle.__init__(self,
-                        self.position,
-                        self.radius,
-                        self.rotation,
+        self.rotation = 0.0
+        Circle.__init__(self, self.position, self.radius, self.rotation,
                         self.color)
 
     def setRandomBrightness(self):
