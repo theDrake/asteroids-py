@@ -43,11 +43,9 @@ class AsteroidsGame(Game):
         center = Point(screenWidth / 2, screenHeight / 2)
         self.ship = Ship(center, SHIP_INITIAL_ROTATION, SHIP_COLOR)
 
-        # Create bullets and an upgrade object:
+        # Create bullet and upgrade lists:
         self.bullets = []
-        for i in range(BULLET_COUNT + 1):
-            self.bullets.append(Bullet(center, BULLET_RADIUS, 0, BULLET_COLOR))
-        self.upgrade = Upgrade(center, UPGRADE_RADIUS, 0, (0, 0, 0))
+        self.upgrades = []
 
         # Create asteroids and background stars:
         self.initializeAsteroids()
@@ -78,40 +76,43 @@ class AsteroidsGame(Game):
         # Bullets:
         if pygame.K_SPACE in newkeys and self.ship.isActive():
             if self.ship.upgradeLevel != 1:
-                self.bullets[0].fire(self.ship.getPoints()[0],
-                                     self.ship.getRotation())
+                self.bullets.append(Bullet(self.ship.getPoints()[0],
+                                           self.ship.getRotation()))
             if self.ship.upgradeLevel > 0:
-                self.bullets[1].fire(self.ship.getPoints()[3],
-                                     self.ship.getRotation())
-                self.bullets[2].fire(self.ship.getPoints()[9],
-                                     self.ship.getRotation())
+                self.bullets.append(Bullet(self.ship.getPoints()[3],
+                                           self.ship.getRotation()))
+                self.bullets.append(Bullet(self.ship.getPoints()[9],
+                                           self.ship.getRotation()))
             if self.ship.upgradeLevel > 2:
-                self.bullets[3].fire(self.ship.getPoints()[3],
-                                     self.ship.getRotation() + 45)
-                self.bullets[4].fire(self.ship.getPoints()[9],
-                                     self.ship.getRotation() - 45)
+                self.bullets.append(Bullet(self.ship.getPoints()[3],
+                                           self.ship.getRotation() + 45))
+                self.bullets.append(Bullet(self.ship.getPoints()[9],
+                                           self.ship.getRotation() - 45))
             if self.ship.upgradeLevel > 3:
-                self.bullets[5].fire(self.ship.getPoints()[3],
-                                     self.ship.getRotation() + 90)
-                self.bullets[6].fire(self.ship.getPoints()[9],
-                                     self.ship.getRotation() - 90)
+                self.bullets.append(Bullet(self.ship.getPoints()[3],
+                                           self.ship.getRotation() + 90))
+                self.bullets.append(Bullet(self.ship.getPoints()[9],
+                                           self.ship.getRotation() - 90))
             if self.ship.upgradeLevel > 4:
-                self.bullets[7].fire(self.ship.getPoints()[4],
-                                     self.ship.getRotation() + 135)
-                self.bullets[8].fire(self.ship.getPoints()[8],
-                                     self.ship.getRotation() - 135)
+                self.bullets.append(Bullet(self.ship.getPoints()[4],
+                                           self.ship.getRotation() + 135))
+                self.bullets.append(Bullet(self.ship.getPoints()[8],
+                                           self.ship.getRotation() - 135))
             if self.ship.upgradeLevel > 5:
-                self.bullets[9].fire(self.ship.getPoints()[6],
-                                     self.ship.getRotation() + 180)
+                self.bullets.append(Bullet(self.ship.getPoints()[6],
+                                           self.ship.getRotation() + 180))
         for b in self.bullets:
             b.gameLogic(keys, newkeys)
+            if b.position.x >= SCREEN_WIDTH or b.position.x < 0 or \
+               b.position.y >= SCREEN_HEIGHT or b.position.y < 0:
+                self.bullets.remove(b)
 
-        # Upgrade icon:
-        if self.upgrade.isActive():
-            self.upgrade.gameLogic()
-            if self.ship.isActive() and self.ship.intersects(self.upgrade):
+        # Upgrades:
+        for u in self.upgrades:
+            u.gameLogic()
+            if self.ship.isActive() and self.ship.intersects(u):
                 self.ship.upgrade()
-                self.upgrade.deactivate()
+                self.upgrades.remove(u)
 
         # Asteroids:
         if self.asteroidCount > 0:
@@ -119,15 +120,15 @@ class AsteroidsGame(Game):
                 a.gameLogic(keys, newkeys)
                 # Check for collisions with bullets:
                 for b in self.bullets:
-                    if a.isActive() and b.isActive() and b.intersects(a):
-                        b.deactivate()
+                    if a.isActive() and b.intersects(a):
+                        self.bullets.remove(b)
                         a.deactivate()
                         self.asteroidCount -= 1
                         self.ship.asteroidsDestroyed += 1
-                        if self.ship.asteroidsDestroyed == UPGRADE_REQUIREMENT \
-                           and not self.upgrade.isActive():
-                            self.upgrade.setPosition(a.position)
-                            self.upgrade.activate()
+                        if self.ship.asteroidsDestroyed % UPGRADE_REQ == 0:
+                            self.upgrades.append(Upgrade(a.position,
+                                                         UPGRADE_RADIUS, 0,
+                                                         (0, 0, 0)))
                 # Check for collisions with the ship:
                 if a.isActive() and self.ship.isActive() and \
                    self.ship.intersects(a):
@@ -159,7 +160,8 @@ class AsteroidsGame(Game):
         surface.fill(BACKGROUND_COLOR)
         for s in self.stars:
             s.paint(surface)
-        self.upgrade.paint(surface)
+        for u in self.upgrades:
+            u.paint(surface)
         self.ship.paint(surface)
         for b in self.bullets:
             b.paint(surface)

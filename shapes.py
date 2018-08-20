@@ -244,7 +244,6 @@ class Ship(Polygon):
         if self.upgradeLevel >= MAX_UPGRADE_LEVEL:
             self.upgradeLevel == MAX_UPGRADE_LEVEL
             self.shielded = True
-        self.asteroidsDestroyed = 0
 
     def paint(self, surface):
         if self.invincibilityTimer > 0 and self.invincibilityTimer % 2:
@@ -316,35 +315,17 @@ class Circle(Shape):
                (self.radius * self.radius)
 
 class Bullet(Circle):
-    def __init__(self, position, radius, rotation, color):
-        Circle.__init__(self, position, radius, rotation, color)
-        self.acceleration = BULLET_SPEED
-        self.deactivate()
+    def __init__(self, position, rotation):
+        Circle.__init__(self, position, BULLET_RADIUS, rotation, BULLET_COLOR)
+        self.accelerate(BULLET_SPEED)
 
     def gameLogic(self, keys, newkeys):
-        if not self.isActive():
-            return
-        self.move()
-
-    def move(self):
         self.position = Point(self.position.x + self.dx,
                               self.position.y + self.dy)
-        if self.position.x >= SCREEN_WIDTH or self.position.x < 0 or \
-           self.position.y >= SCREEN_HEIGHT or self.position.y < 0:
-            self.deactivate()
-
-    def fire(self, position, rotation):
-        self.activate()
-        self.position = position
-        self.rotation = rotation
-        self.dx = 0
-        self.dy = 0
-        self.accelerate(self.acceleration)
 
 class Upgrade(Circle):
     def __init__(self, position, radius, rotation, color):
         Circle.__init__(self, position, radius, rotation, color)
-        self.deactivate()
 
     def gameLogic(self):
         self.setRandomColor()

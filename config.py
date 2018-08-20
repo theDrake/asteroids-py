@@ -49,7 +49,7 @@ BULLET_COLOR = (255, 255, 0)
 BULLET_SPEED = 30.0
 
 UPGRADE_RADIUS = 6.0
-UPGRADE_REQUIREMENT = 5 # number of asteroids to destroy to earn upgrade
+UPGRADE_REQ = 5 # number of asteroids to destroy to earn upgrade
 MAX_UPGRADE_LEVEL = 7
 
 STAR_COUNT = 200
