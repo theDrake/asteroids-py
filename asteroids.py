@@ -11,8 +11,10 @@
 #-------------------------------------------------------------------------------
 
 import random
+import pygame
+from pygame import mixer, mouse
 from game import Game
-from shapes import *
+from shapes import Ship, Asteroid, Star, Upgrade, Bullet, Point
 from config import *
 
 #-------------------------------------------------------------------------------
@@ -20,27 +22,24 @@ from config import *
 #
 # Description: Manages a modified version of the classic Asteroids game.
 #
-#     Methods: __init__, gameLogic, paint, initializeAsteroids
+#     Methods: __init__, game_logic, paint, spawn_asteroids
 #-------------------------------------------------------------------------------
 class AsteroidsGame(Game):
     #---------------------------------------------------------------------------
     #      Method: __init__
     #
-    # Description: Creates all game objects (a ship, bullets, an upgrade icon,
-    #              asteroids, and stars) and starts playing background music.
+    # Description: Creates game objects and starts background music.
     #
-    #      Inputs: title        - Text to display along the top of the window.
-    #              screenWidth  - Width of the screen, in pixels.
-    #              screenHeight - Height of the screen, in pixels.
-    #              fps          - Frames per second.
+    #      Inputs: fps - Desired frames per second.
     #
     #     Outputs: None.
     #---------------------------------------------------------------------------
-    def __init__(self, title, screenWidth, screenHeight, fps):
-        Game.__init__(self, title, screenWidth, screenHeight, fps)
+    def __init__(self, fps=FRAMES_PER_SECOND):
+        Game.__init__(self, fps)
+        mouse.set_visible(False)
 
         # Create the ship and place it in the center of the screen:
-        center = Point(screenWidth / 2, screenHeight / 2)
+        center = Point(self.width / 2, self.height / 2)
         self.ship = Ship(center, SHIP_INITIAL_ROTATION, SHIP_COLOR)
 
         # Create bullet and upgrade lists:
@@ -48,99 +47,95 @@ class AsteroidsGame(Game):
         self.upgrades = []
 
         # Create asteroids and background stars:
-        self.initializeAsteroids()
+        self.asteroids = []
+        self.spawn_asteroids()
         self.stars = []
-        for i in range(STAR_COUNT + 1):
-            self.stars.append(Star())
+        while len(self.stars) < (self.width * STAR_DENSITY):
+            self.stars.append(Star(self.get_random_point()))
 
-        # Initialize mixer and start playing music:
-        pygame.mixer.init()
-        pygame.mixer.music.load(BACKGROUND_MUSIC)
-        pygame.mixer.music.play(-1)
+        # Initialize mixer and start looping background music:
+        mixer.init()
+        mixer.music.load(BACKGROUND_MUSIC)
+        mixer.music.play(-1)
 
     #---------------------------------------------------------------------------
-    #      Method: gameLogic
+    #      Method: game_logic
     #
     # Description: Determines game behavior based on keyboard input and object
     #              interactions.
     #
-    #      Inputs: keys    - Keys that are currently pressed down.
-    #              newkeys - Keys that have just begun to be pressed down.
+    #      Inputs: keys     - Keys that are currently pressed down.
+    #              new_keys - Keys that have just begun to be pressed down.
     #
     #     Outputs: None.
     #---------------------------------------------------------------------------
-    def gameLogic(self, keys, newkeys):
+    def game_logic(self, keys, new_keys):
         # Ship:
-        self.ship.gameLogic(keys, newkeys)
+        self.ship.game_logic(keys, new_keys)
+        self.ship.boundary_check(self.width, self.height)
 
         # Bullets:
-        if pygame.K_SPACE in newkeys and self.ship.isActive():
-            if self.ship.upgradeLevel != 1:
-                self.bullets.append(Bullet(self.ship.getPoints()[0],
-                                           self.ship.getRotation()))
-            if self.ship.upgradeLevel > 0:
-                self.bullets.append(Bullet(self.ship.getPoints()[3],
-                                           self.ship.getRotation()))
-                self.bullets.append(Bullet(self.ship.getPoints()[9],
-                                           self.ship.getRotation()))
-            if self.ship.upgradeLevel > 2:
-                self.bullets.append(Bullet(self.ship.getPoints()[3],
-                                           self.ship.getRotation() + 45))
-                self.bullets.append(Bullet(self.ship.getPoints()[9],
-                                           self.ship.getRotation() - 45))
-            if self.ship.upgradeLevel > 3:
-                self.bullets.append(Bullet(self.ship.getPoints()[3],
-                                           self.ship.getRotation() + 90))
-                self.bullets.append(Bullet(self.ship.getPoints()[9],
-                                           self.ship.getRotation() - 90))
-            if self.ship.upgradeLevel > 4:
-                self.bullets.append(Bullet(self.ship.getPoints()[4],
-                                           self.ship.getRotation() + 135))
-                self.bullets.append(Bullet(self.ship.getPoints()[8],
-                                           self.ship.getRotation() - 135))
-            if self.ship.upgradeLevel > 5:
-                self.bullets.append(Bullet(self.ship.getPoints()[6],
-                                           self.ship.getRotation() + 180))
+        if ((pygame.K_SPACE in new_keys or pygame.K_RETURN in new_keys or
+             pygame.K_KP_ENTER in new_keys or pygame.K_LCTRL in new_keys or
+             pygame.K_RCTRL in new_keys) and self.ship.active):
+            if self.ship.upgrade_level != 1:
+                self.bullets.append(Bullet(self.ship.get_points()[0],
+                                           self.ship.rotation))
+            if self.ship.upgrade_level > 0:
+                self.bullets.append(Bullet(self.ship.get_points()[3],
+                                           self.ship.rotation))
+                self.bullets.append(Bullet(self.ship.get_points()[9],
+                                           self.ship.rotation))
+            if self.ship.upgrade_level > 2:
+                self.bullets.append(Bullet(self.ship.get_points()[3],
+                                           self.ship.rotation + 45))
+                self.bullets.append(Bullet(self.ship.get_points()[9],
+                                           self.ship.rotation - 45))
+            if self.ship.upgrade_level > 3:
+                self.bullets.append(Bullet(self.ship.get_points()[3],
+                                           self.ship.rotation + 90))
+                self.bullets.append(Bullet(self.ship.get_points()[9],
+                                           self.ship.rotation - 90))
+            if self.ship.upgrade_level > 4:
+                self.bullets.append(Bullet(self.ship.get_points()[4],
+                                           self.ship.rotation + 135))
+                self.bullets.append(Bullet(self.ship.get_points()[8],
+                                           self.ship.rotation - 135))
+            if self.ship.upgrade_level > 5:
+                self.bullets.append(Bullet(self.ship.get_points()[6],
+                                           self.ship.rotation + 180))
         for b in self.bullets:
-            b.gameLogic(keys, newkeys)
-            if b.position.x >= SCREEN_WIDTH or b.position.x < 0 or \
-               b.position.y >= SCREEN_HEIGHT or b.position.y < 0:
+            b.game_logic(keys, new_keys)
+            if (b.position.x > self.width or b.position.x < 0 or
+                b.position.y > self.height or b.position.y < 0):
                 self.bullets.remove(b)
 
         # Upgrades:
         for u in self.upgrades:
-            u.gameLogic()
-            if self.ship.isActive() and self.ship.intersects(u):
+            u.game_logic()
+            if self.ship.active and self.ship.intersects(u):
                 self.ship.upgrade()
                 self.upgrades.remove(u)
 
         # Asteroids:
-        if self.asteroidCount > 0:
+        if self.asteroid_count > 0:
             for a in self.asteroids:
-                a.gameLogic(keys, newkeys)
-                # Check for collisions with bullets:
-                for b in self.bullets:
-                    if a.isActive() and b.intersects(a):
-                        self.bullets.remove(b)
-                        a.deactivate()
-                        self.asteroidCount -= 1
-                        self.ship.asteroidsDestroyed += 1
-                        if self.ship.asteroidsDestroyed % UPGRADE_REQ == 0:
-                            self.upgrades.append(Upgrade(a.position,
-                                                         UPGRADE_RADIUS, 0,
-                                                         (0, 0, 0)))
-                # Check for collisions with the ship:
-                if a.isActive() and self.ship.isActive() and \
-                   self.ship.intersects(a):
-                    self.ship.takeDamage()
-            # If all asteroids have been destroyed, a respawn timer is set:
-            if self.asteroidCount <= 0:
-                self.asteroidRespawnTimer = RESPAWN_DELAY
-        elif self.asteroidRespawnTimer > 0:
-            self.asteroidRespawnTimer -= 1
+                if a.active:
+                    a.game_logic(keys, new_keys)
+                    a.boundary_check(self.width, self.height)
+                    if self.ship.active and self.ship.intersects(a):
+                        self.ship.take_damage()
+                        self.destroy_asteroid(a)
+                    else:
+                        for b in self.bullets:
+                            if b.intersects(a):
+                                self.bullets.remove(b)
+                                self.destroy_asteroid(a)
+                                break
+        elif self.asteroid_respawn_timer > 0:
+            self.asteroid_respawn_timer -= 1
         else:
-            # Spawn a new set of asteroids:
-            self.initializeAsteroids()
+            self.spawn_asteroids()
 
         # Stars:
         for s in self.stars:
@@ -169,23 +164,67 @@ class AsteroidsGame(Game):
             a.paint(surface)
 
     #---------------------------------------------------------------------------
-    #      Method: initializeAsteroids
+    #      Method: spawn_asteroids
     #
-    # Description: Creates a new set of asteroid objects.
+    # Description: Creates a new set of large asteroids. Also makes player
+    #              temporarily invincible to avoid unfair deaths.
     #
     #      Inputs: None.
     #
     #     Outputs: None.
     #---------------------------------------------------------------------------
-    def initializeAsteroids(self):
-        self.asteroids = []
-        for i in range(ASTEROID_COUNT + 1):
-            self.asteroids.append(Asteroid())
-        self.asteroidCount = len(self.asteroids)
+    def spawn_asteroids(self):
+        self.asteroid_count = int(self.width * ASTEROID_DENSITY)
+        while len(self.asteroids):
+            self.asteroids.pop()
+        self.ship.invincibility_timer = VULNERABILITY_DELAY
+        while len(self.asteroids) < self.asteroid_count:
+            self.asteroids.append(Asteroid(ASTEROID_MAX_RADIUS,
+                                           self.get_random_point()))
+        self.asteroid_respawn_timer = 0
+
+    #---------------------------------------------------------------------------
+    #      Method: destroy_asteroid
+    #
+    # Description: Handles the destruction of a given asteroid and the resulting
+    #              aftermath, including possibly creating two smaller asteroids
+    #              in its place.
+    #
+    #      Inputs: asteroid - The asteroid to be destroyed.
+    #
+    #     Outputs: None.
+    #---------------------------------------------------------------------------
+    def destroy_asteroid(self, asteroid):
+            asteroid.active = False
+            self.ship.asteroids_destroyed += 1
+            if self.ship.asteroids_destroyed % UPGRADE_REQ == 0:
+                self.upgrades.append(Upgrade(asteroid.position))
+            half_radius = asteroid.average_radius / 2
+            self.asteroid_count -= 1
+            if half_radius >= ASTEROID_MIN_RADIUS:
+                self.asteroids.append(Asteroid(half_radius, asteroid.position))
+                self.asteroids.append(Asteroid(half_radius, asteroid.position))
+                self.asteroid_count += 2
+            elif self.asteroid_count <= 0:
+                self.asteroid_respawn_timer = RESPAWN_DELAY
+
+    #---------------------------------------------------------------------------
+    #      Method: get_random_point
+    #
+    # Description: Generates a random spawn point (for a star or asteroid).
+    #
+    #      Inputs: None.
+    #
+    #     Outputs: Tuple containing the random coordinates.
+    #---------------------------------------------------------------------------
+    def get_random_point(self):
+        random_point = Point(int(random.uniform(0, self.width - 1)),
+                             int(random.uniform(0, self.height - 1)))
+        return random_point
 
 def main():
-    game = AsteroidsGame(TITLE, SCREEN_WIDTH, SCREEN_HEIGHT, FRAMES_PER_SECOND)
-    game.mainLoop()
+    game = AsteroidsGame()
+    game.main_loop()
 
 if __name__ == '__main__':
     main()
