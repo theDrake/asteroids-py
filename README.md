@@ -7,10 +7,13 @@ A variant on the classic _Asteroids_ game, developed using
 
 Controls
 --------
-* Accelerate forward: up arrow key
-* Accelerate backward: down arrow key
-* Turn left: left arrow key
-* Turn right: right arrow key
-* Shoot: space bar
+* Accelerate forward: 'up' or 'w'
+* Accelerate backward: 'down' or 's'
+* Turn left: 'left' or 'a'
+* Turn right: 'right' or 'd'
+* Shoot: 'space' or 'enter' or 'ctrl'
+* Quit: 'esc'
 
-Pick up power-ups for increased firepower and shielding!
+Asteroids occasionally drop power-ups that increase your ship's attack spread.
+Once you're shooting in all directions, picking up another power-up will provide
+shielding, preventing the next hit from destroying your ship.
