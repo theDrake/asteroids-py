@@ -1,13 +1,12 @@
-#!/usr/bin/python2
+#!/usr/bin/python
 
 #-------------------------------------------------------------------------------
 #    Filename: asteroids.py
 #
 #      Author: David C. Drake (https://davidcdrake.com)
 #
-# Description: Contains an 'AsteroidsGame' class for managing a modified version
-#              of the classic game Asteroids and a 'main' function for running
-#              it. Developed using Python 2.7 and Pygame 1.9.
+# Description: Contains an 'AsteroidsGame' class for managing a simple Asteroids
+#              game and a 'main' function for running it.
 #-------------------------------------------------------------------------------
 
 import random
@@ -39,7 +38,7 @@ class AsteroidsGame(game.Game):
         mouse.set_visible(False)
 
         # Create the ship and place it in the center of the screen:
-        center = shapes.Point(self.width / 2, self.height / 2)
+        center = shapes.Point(self.width // 2, self.height // 2)
         self.ship = shapes.Ship(center, SHIP_INITIAL_ROTATION, SHIP_COLOR)
 
         # Create bullet and upgrade lists:
@@ -199,7 +198,7 @@ class AsteroidsGame(game.Game):
             self.ship.asteroids_destroyed += 1
             if self.ship.asteroids_destroyed % UPGRADE_REQ == 0:
                 self.upgrades.append(shapes.Upgrade(asteroid.position))
-            half_radius = asteroid.average_radius / 2
+            half_radius = asteroid.average_radius // 2
             self.asteroid_count -= 1
             if half_radius >= ASTEROID_MIN_RADIUS:
                 self.asteroids.append(shapes.Asteroid(half_radius,

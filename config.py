@@ -3,8 +3,7 @@
 #
 #      Author: David C. Drake (https://davidcdrake.com)
 #
-# Description: Configuration file for an Asteroids game developed using Python
-#              2.7 and Pygame 1.9.
+# Description: Configuration file for a simple Asteroids game.
 #-------------------------------------------------------------------------------
 
 FRAMES_PER_SECOND = 60

@@ -5,8 +5,7 @@
 #
 # Description: Contains shape-related classes for use in an Asteroids game,
 #              including 'Shape' (abstract), 'Polygon', 'Circle', 'Ship',
-#              'Asteroid', 'Bullet', 'Star', 'Upgrade', and 'Point'. Developed
-#              using Python 2.7 and Pygame 1.9.
+#              'Asteroid', 'Bullet', 'Star', 'Upgrade', and 'Point'.
 #-------------------------------------------------------------------------------
 
 import math
@@ -297,8 +296,8 @@ class Asteroid(Polygon):
     def _set_random_points(self, average_radius):
         self.shape = []
         points = random.randint(ASTEROID_MIN_POINTS, ASTEROID_MAX_POINTS)
-        radius_deviation = average_radius / 4
-        for i in range(0, 360, 360 / points):
+        radius_deviation = average_radius // 4
+        for i in range(0, 360, 360 // points):
             radius = random.randint(average_radius - radius_deviation,
                                     average_radius + radius_deviation)
             radians = math.radians(i)
@@ -324,7 +323,7 @@ class Circle(Shape):
 
     def get_points(self):
         points = []
-        for i in range(0, 360, 360 / CIRCLE_POINT_COUNT):
+        for i in range(0, 360, 360 // CIRCLE_POINT_COUNT):
             radians = math.radians(i)
             p = Point(math.cos(radians) * self.radius + self.position.x,
                       math.sin(radians) * self.radius + self.position.y)
